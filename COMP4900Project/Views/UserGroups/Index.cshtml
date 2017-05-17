@@ -1,0 +1,48 @@
+﻿@model IEnumerable<COMP4900Project.Models.UserGroup>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <h2>@User.Identity.GetUserName()'s Groups</h2>
+}
+else
+{
+    <h2>Groups</h2>
+}
+
+<p>
+    @Html.ActionLink("Create Group", "Create", "Groups")
+</p>
+<p>
+    @Html.ActionLink("Join Group", "Create")
+</p>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Group.GroupName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Group.GroupName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "Groups", new { id = item.GroupId }, null) |
+            @Html.ActionLink("Details", "Details", "Groups", new { id=item.GroupId }, null) |
+            @Html.ActionLink("Delete", "Delete", "Groups", new { id=item.GroupId }, null)
+        </td>
+    </tr>
+}
+
+</table>

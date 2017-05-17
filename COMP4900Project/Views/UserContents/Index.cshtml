@@ -1,0 +1,75 @@
+﻿@model IEnumerable<COMP4900Project.Models.UserContent>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <h2>@User.Identity.GetUserName()'s Contents</h2>
+}
+else
+{
+    <h2>UserContents</h2>
+}
+
+<p>
+    @Html.ActionLink("Create Content", "Create", "Contents")
+</p>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>*@
+<table class="table">
+    <tr>
+    @if (Request.IsAuthenticated && User.Identity.GetUserName() == "Admin")
+    {
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+    }
+        <th>
+            @Html.DisplayNameFor(model => model.Contents.Text)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contents.Note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contents.Reference)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contents.TimeUpdated)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+    @if (Request.IsAuthenticated && User.Identity.GetUserName() == "Admin")
+    {
+        <th>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </th>
+    }
+        <td>
+            @Html.DisplayFor(modelItem => item.Contents.Text)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contents.Note)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contents.Reference)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contents.TimeUpdated)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", "Contents", new { id=item.ContentId }, null) |
+            @Html.ActionLink("Details", "Details", "Contents", new { id=item.ContentId }, null) |
+            @Html.ActionLink("Delete", "Delete", "Contents", new { id=item.ContentId }, null)
+        </td>
+    </tr>
+}
+
+</table>

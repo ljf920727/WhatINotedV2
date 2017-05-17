@@ -1,0 +1,51 @@
+﻿@model IEnumerable<COMP4900Project.Models.Friend>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated && User.Identity.GetUserName() != "Admin")
+{
+    <h2>@User.Identity.GetUserName()'s Friends</h2>
+}
+else
+{
+    <h2>Friends</h2>
+}
+
+<p>
+    @Html.ActionLink("Add Friend", "Create")
+</p>
+<table class="table">
+    <tr>
+    @if (Request.IsAuthenticated && User.Identity.GetUserName() == "Admin")
+    {
+        <th>
+            @Html.DisplayNameFor(model => model.User1.UserName)
+        </th>
+    }
+        <th>
+            @Html.DisplayNameFor(model => model.User2.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+    @if (Request.IsAuthenticated && User.Identity.GetUserName() == "Admin")
+    {
+        <td>
+            @Html.DisplayFor(modelItem => item.User1.UserName)
+        </td>
+    }
+        <td>
+            @Html.DisplayFor(modelItem => item.User2.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.FriendId })
+        </td>
+    </tr>
+}
+
+</table>

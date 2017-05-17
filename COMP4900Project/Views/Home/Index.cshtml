@@ -1,0 +1,46 @@
+﻿@model IEnumerable<COMP4900Project.Models.Content>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (Request.IsAuthenticated)
+{
+    <h2>Home Page</h2>
+
+    <p>Welcome to WhatINoted.com</p>
+
+
+    <h2>Recent Note Updates</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Sample
+            </th>
+            <th>
+                Date Update
+            </th>
+            <th></th>
+        </tr>
+
+    </table>
+    <h2>Recent Citation Updates</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Date Updated
+            </th>
+        </tr>
+
+    </table>
+}
+else
+{
+    <h2>WhatINoted.com</h2>
+}
