@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using COMP4900Project.Models;
+using System.Web.Script.Serialization;
 
 namespace COMP4900Project.Controllers
 {
@@ -37,10 +38,10 @@ namespace COMP4900Project.Controllers
         }
 
         // GET: ContentGroups/Create
-        public ActionResult Create()
+        public ActionResult Create2(int groupid)
         {
             ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text");
-            ViewBag.GroupId = new SelectList(db.Groups, "GroupId", "GroupName");
+            //ViewBag.GroupId = new SelectList(db.Groups, "GroupId", "GroupName");
             return View();
         }
 
@@ -56,6 +57,22 @@ namespace COMP4900Project.Controllers
                 db.ContentGroups.Add(contentGroup);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+
+            ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text", contentGroup.ContentId);
+            ViewBag.GroupId = new SelectList(db.Groups, "GroupId", "GroupName", contentGroup.GroupId);
+            return View(contentGroup);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create2([Bind(Include = "ContentId,GroupId")] ContentGroup contentGroup)
+        {
+            if (ModelState.IsValid)
+            {
+                db.ContentGroups.Add(contentGroup);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Groups", new { id = contentGroup.GroupId });
             }
 
             ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text", contentGroup.ContentId);
@@ -131,6 +148,32 @@ namespace COMP4900Project.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+
+
+        public string GetGroupContents(int groupid)
+        {
+            //string userid = User.Identity.GetUserId();
+            //DateTime period = DateTime.Now.AddDays(-7);
+
+            //return "";
+
+            var groupContents = db.ContentGroups.Include(u => u.Content).Include(u => u.Group).Where(u => u.GroupId == groupid);
+
+            JsonResult jsonresult = Json(
+                groupContents.Select(x => new
+                {
+                    ContentId = x.ContentId,
+                    ContentGroupId = x.ContentGroupId,
+                    Note = x.Content.Note,
+                    Reference = x.Content.Reference,
+                    TimeUpdated = x.Content.TimeUpdated
+                }));
+
+            string json = new JavaScriptSerializer().Serialize(jsonresult);
+            return json;
         }
     }
 }

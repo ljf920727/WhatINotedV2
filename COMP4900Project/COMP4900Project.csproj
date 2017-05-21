@@ -403,7 +403,7 @@
     <Content Include="Views\Friends\Details.cshtml" />
     <Content Include="Views\Friends\Edit.cshtml" />
     <Content Include="Views\Friends\Index.cshtml" />
-    <Content Include="Views\UserContents\Create.cshtml" />
+    <Content Include="Views\UserContents\Create2.cshtml" />
     <Content Include="Views\UserContents\Delete.cshtml" />
     <Content Include="Views\UserContents\Details.cshtml" />
     <Content Include="Views\UserContents\Edit.cshtml" />
@@ -413,7 +413,7 @@
     <Content Include="Views\UserGroups\Details.cshtml" />
     <Content Include="Views\UserGroups\Edit.cshtml" />
     <Content Include="Views\UserGroups\Index.cshtml" />
-    <Content Include="Views\ContentGroups\Create.cshtml" />
+    <Content Include="Views\ContentGroups\Create2.cshtml" />
     <Content Include="Views\ContentGroups\Delete.cshtml" />
     <Content Include="Views\ContentGroups\Details.cshtml" />
     <Content Include="Views\ContentGroups\Edit.cshtml" />
@@ -436,6 +436,7 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.eot" />
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Home\QA.cshtml" />
+    <Content Include="Views\Contents\EditGroup.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

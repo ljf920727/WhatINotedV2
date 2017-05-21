@@ -24,6 +24,7 @@ p{
         contentType: false,
         processData: false,
         success: function (Data) {
+            //alert(Data);
             obj = JSON.parse(Data);
             var content = "<table class=\"table\"><tr><th>Note</th><th>Reference</th>" +
                 "<th>TimeUpdated</th><th></th></tr>";
@@ -50,8 +51,8 @@ p{
                 content += "<tr><td>" + obj["Data"][i]["Note"] + "</td><td>" +
                     obj["Data"][i]["Reference"] + "</td><td>" + dateValue3 + "</td><td>" +
                     "<a href=\"/Contents/Edit/" + obj["Data"][i]["ContentId"] + "\">Edit</a> | " +
-                    "<a href=\"/Contents/Details/" + obj["Data"][i]["ContentId"] + "\">Details</a> | " +
-                    "<a href=\"/Contents/Delete/" + obj["Data"][i]["ContentId"] + "\">Delete</a>" +
+                    "<a href=\"/Contents/Details/" + obj["Data"][i]["ContentId"] + "\">View</a> | " +
+                    "<a href=\"/UserContents/Delete/" + obj["Data"][i]["UserContentId"] + "\">Delete</a>" +
                     "</td></tr>";
             }
             content += "</table>";

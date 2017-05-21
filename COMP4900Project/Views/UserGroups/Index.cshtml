@@ -39,8 +39,8 @@ else
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", "Groups", new { id = item.GroupId }, null) |
-            @Html.ActionLink("Details", "Details", "Groups", new { id=item.GroupId }, null) |
-            @Html.ActionLink("Delete", "Delete", "Groups", new { id=item.GroupId }, null)
+            @Html.ActionLink("View", "Details", "Groups", new { id=item.GroupId }, null) |
+            @Html.ActionLink("Leave Group", "Delete", new { id=item.UserGroupId })
         </td>
     </tr>
 }
