@@ -262,8 +262,8 @@ function validateForm() {
         <div >
             @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.TextAreaFor(model => model.Note)*@
-                <textarea id="Note"  value=""></textarea>
+                @Html.TextAreaFor(model => model.Note)
+                @*<textarea id="Note"  value=""></textarea>*@
                 @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
             </div>
         </div>
