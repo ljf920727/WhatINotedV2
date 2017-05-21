@@ -12,6 +12,7 @@ using System.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.IO;
+using System.Web.Script.Serialization;
 
 namespace COMP4900Project.Controllers
 {
@@ -126,19 +127,55 @@ namespace COMP4900Project.Controllers
             return View(content);
         }
 
-
-        public string GetNote(int? id)
+        public ActionResult EditGroup(int? id)
         {
             if (id == null)
             {
-                return "";
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Content content = db.Contents.Find(id);
             if (content == null)
             {
-                return "";
+                return HttpNotFound();
             }
-            return content.Note;
+            return View(content);
+        }
+
+
+        public string GetNote(int? id)
+        {
+            //string userid = User.Identity.GetUserId();
+            //DateTime period = DateTime.Now.AddDays(-7);
+
+            var content = db.Contents.Where(f => f.ContentId == id);
+
+            //var userContents = db.UserContents.Include(u => u.Contents).Include(u => u.User).Where(f => f.UserId == userid).Where(f => f.Contents.TimeUpdated > period);
+
+            JsonResult jsonresult = Json(
+                content.Select(x => new {
+                    ContentId = x.ContentId,
+                    Text = x.Text,
+                    Note = x.Note,
+                    Reference = x.Reference,
+                    TimeUpdated = x.TimeUpdated
+                }));
+
+            string json = new JavaScriptSerializer().Serialize(jsonresult);
+            return json;
+
+
+
+
+            //if (id == null)
+            //{
+            //    return "";
+            //}
+            //Content content = db.Contents.Find(id);
+            //if (content == null)
+            //{
+            //    return "";
+            //}
+            //return content.Note;
         }
 
 
@@ -163,8 +200,39 @@ namespace COMP4900Project.Controllers
             return View(content);
         }
 
+        [HttpPost]
+        [ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditGroup([Bind(Include = "ContentId,Text,Note,Reference")] Content content)
+        {
+            content.TimeUpdated = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                db.Entry(content).State = EntityState.Modified;
+                db.SaveChanges();
+                //return RedirectToAction("Index");
+                return RedirectToAction("Index", "ContentGroups");
+            }
+            return View(content);
+        }
+
         // GET: Contents/Delete/5
         public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Content content = db.Contents.Find(id);
+            if (content == null)
+            {
+                return HttpNotFound();
+            }
+            return View(content);
+        }
+
+        public ActionResult DeleteGroup(int? id)
         {
             if (id == null)
             {
@@ -188,6 +256,17 @@ namespace COMP4900Project.Controllers
             db.SaveChanges();
             //return RedirectToAction("Index");
             return RedirectToAction("Index", "UserContents");
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmedGroup(int id)
+        {
+            Content content = db.Contents.Find(id);
+            db.Contents.Remove(content);
+            db.SaveChanges();
+            //return RedirectToAction("Index");
+            return RedirectToAction("Index", "ContentGroups");
         }
 
         protected override void Dispose(bool disposing)

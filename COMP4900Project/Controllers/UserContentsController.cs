@@ -57,12 +57,12 @@ namespace COMP4900Project.Controllers
         }
 
         // GET: UserContents/Create
-        public ActionResult Create(string userid, int contentid)
+        public ActionResult Create2(int contentid)
         {
-            if (userid == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (contentid == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
             //UserContent userContent = db.UserContents.Find(id);
 
             //var userContent = db.UserContents.Include(u => u.Contents).Include(u => u.User).Where(f => f.ContentId == id);
@@ -71,15 +71,16 @@ namespace COMP4900Project.Controllers
 
             //ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text");
 
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
 
-            UserContent userContent = new UserContent(userid, contentid);
 
-            return View(userContent);
+
+            //UserContent userContent = new UserContent("", contentid);
+            //return View(userContent);
 
             //ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text");
-            //ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            //return View();
+            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
+            return View();
         }
 
         // POST: UserContents/Create
@@ -90,6 +91,27 @@ namespace COMP4900Project.Controllers
         //public ActionResult Create([Bind(Include = "UserContentId,UserId,ContentId")] UserContent userContent)
         public ActionResult Create([Bind(Include = "UserId,ContentId")] UserContent userContent)
         {
+            if (ModelState.IsValid)
+            {
+                db.UserContents.Add(userContent);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ContentId = new SelectList(db.Contents, "ContentId", "Text", userContent.ContentId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", userContent.UserId);
+            return View(userContent);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "UserContentId,UserId,ContentId")] UserContent userContent)
+        public ActionResult Create2([Bind(Include = "UserId,ContentId")] UserContent userContent)
+        {
+            //var users = db.Users.Include(u => u.Id).Where(u => u.Email == Email);
+            //return View(userContents.ToList());
+
             if (ModelState.IsValid)
             {
                 db.UserContents.Add(userContent);
@@ -197,6 +219,7 @@ namespace COMP4900Project.Controllers
             JsonResult jsonresult = Json(
                 userContents.Select(x => new {
                     ContentId = x.ContentId,
+                    UserContentId = x.UserContentId,
                     Note = x.Contents.Note,
                     Reference = x.Contents.Reference,
                     TimeUpdated = x.Contents.TimeUpdated
@@ -205,6 +228,7 @@ namespace COMP4900Project.Controllers
             string json = new JavaScriptSerializer().Serialize(jsonresult);
             return json;
         }
+
 
         public string GetRecentContents()
         {

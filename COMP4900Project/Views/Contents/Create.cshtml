@@ -50,7 +50,7 @@
         var pages = document.getElementById('pages').value;
         //var style = document.getElementById('style').value;
 
-        if (Reference1 == "") {
+        if (!(Reference1.length == 10 || Reference1.length == 13)) {
             alert("Please enter 10 or 13 digit ISBN");
         }
         else {
@@ -301,7 +301,7 @@ function validateForm() {
 
 
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Index", "UserContents")
     </div>
     @section Scripts {
         @Scripts.Render("~/bundles/jqueryval")

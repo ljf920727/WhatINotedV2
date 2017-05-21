@@ -59,8 +59,10 @@ namespace COMP4900Project.Controllers
         public ActionResult Create()
         {
             ViewBag.GroupId = new SelectList(db.Groups, "GroupId", "GroupName");
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
-            return View();
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
+            string userid = User.Identity.GetUserId();
+            UserGroup usergroup = new UserGroup(userid, 0);
+            return View(usergroup);
         }
 
         // POST: UserGroups/Create

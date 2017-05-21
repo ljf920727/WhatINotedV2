@@ -4,8 +4,11 @@
     ViewBag.Title = "Index";
 }
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
+
+@if (Request.IsAuthenticated)
+{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
 
     $.ajax({
         type: 'GET',
@@ -16,7 +19,7 @@
         success: function (Data) {
             obj = JSON.parse(Data);
             var content = "<table class=\"table\"><tr><th>Note</th><th>Reference</th>" +
-                "<th>TimeUpdated</th></tr>";
+                "<th>TimeUpdated</th><th></th></tr>";
 
             for (var i = 0; i < obj["Data"].length; i++) {
                 var dateValue = parseInt(obj["Data"][i]["TimeUpdated"].replace(/\/Date\((\d+)\)\//g, "$1"));
@@ -38,7 +41,9 @@
                 var dateValue3 = dateValue2.getFullYear() + "-" + month + "-" + day + "  " + strTime;
 
                 content += "<tr><td>" + obj["Data"][i]["Note"] + "</td><td>" +
-                    obj["Data"][i]["Reference"] + "</td><td>" + dateValue3 + "</td></tr>";
+                    obj["Data"][i]["Reference"] + "</td><td>" + dateValue3 + "</td><td>" +
+                    "<a href=\"/Contents/Details/" + obj["Data"][i]["ContentId"] + "\">View</a>" +
+                    "</tr>";
             }
             content += "</table>";
             document.getElementById("content").innerHTML = content;
@@ -49,13 +54,11 @@
         }
     });
 
-</script>
+    </script>
 
 
 
 
-@if (Request.IsAuthenticated)
-{
     <h2>Home Page</h2>
 
     <p>Welcome to WhatINoted.com</p>
